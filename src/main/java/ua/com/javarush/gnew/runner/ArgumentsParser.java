@@ -49,7 +49,9 @@ public class ArgumentsParser {
         }
 
         if (key == null) {
-            throw new IllegalArgumentException("Key is required for encrypt or decrypt mode");
+            if (command != Command.BRUTEFORCE) {
+                throw new IllegalArgumentException("Key is required for encrypt or decrypt mode");
+            }
         }
 
         if (filePath == null) {
