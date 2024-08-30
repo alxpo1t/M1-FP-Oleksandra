@@ -10,58 +10,49 @@ public class Cypher {
 
     public String encrypt(String input, int key) {
         key = Math.negateExact(key);
+        ArrayList<Character> rotatedAlphabet = rotateAlphabet(key);
+        return transform(input, rotatedAlphabet);
+    }
 
-        ArrayList<Character> rotatedAlphabet = new ArrayList<>(originalAlphabet);
-        Collections.rotate(rotatedAlphabet, key);
-        char[] charArray = input.toCharArray();
+    public String decrypt(String input, int key) {
+        ArrayList<Character> rotatedAlphabet = rotateAlphabet(key);
+        return transform(input, rotatedAlphabet);
+    }
 
+    private String transform(String input, ArrayList<Character> rotatedAlphabet){
         StringBuilder builder = new StringBuilder();
-        for (char symbol : charArray) {
+        for (char symbol : input.toCharArray()) {
             builder.append(processSymbol(symbol, rotatedAlphabet));
         }
         return builder.toString();
     }
 
-    public String decrypt(String input, int key) {
+    private ArrayList<Character> rotateAlphabet(int key) {
         ArrayList<Character> rotatedAlphabet = new ArrayList<>(originalAlphabet);
         Collections.rotate(rotatedAlphabet, key);
-        char[] charArray = input.toCharArray();
-
-        StringBuilder builder = new StringBuilder();
-        for (char symbol : charArray) {
-            builder.append(processSymbol(symbol, rotatedAlphabet));
-        }
-        return builder.toString();
+        return rotatedAlphabet;
     }
 
     public String bruteForceDecrypt(String input) {
         for (int key = 0; key < originalAlphabet.size(); key++) {
-            // Create a new rotated alphabet for each key
-            ArrayList<Character> rotatedAlphabet = new ArrayList<>(originalAlphabet);
-            Collections.rotate(rotatedAlphabet, key);
+            ArrayList<Character> rotatedAlphabet = rotateAlphabet(key);
+            String decryptedText = transform(input, rotatedAlphabet);
 
-            StringBuilder builder = new StringBuilder();
-            char[] charArray = input.toCharArray();
-
-            for (char symbol : charArray) {
-                builder.append(processSymbol(symbol, rotatedAlphabet));
-            }
-
-            String decryptedText = builder.toString();
-            // Debugging: Print out each attempt
-            System.out.println("Key: " + key + " -> " + decryptedText);
-
-            String[] myWords = decryptedText.split(" ");
-            // Check if the decrypted message contains any of the English words
-            for (String word : ENG_WORDS) {
-                for (String word1 : myWords){
-                    if (word.equals(word1)) {
-                        return decryptedText;
-                    }
-                }
+            if (containsEngWords(decryptedText)) {
+                return decryptedText;
             }
         }
         return null;
+    }
+
+    private boolean containsEngWords(String decryptedText){
+        ArrayList<String> words = new ArrayList<>(Arrays.asList(decryptedText.split(" ")));
+        for (String word : words) {
+            if (ENG_WORDS.contains(word)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private Character processSymbol(char symbol, ArrayList<Character> rotatedAlphabet) {
