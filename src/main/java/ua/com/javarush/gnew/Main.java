@@ -24,6 +24,14 @@ public class Main {
 
                 Path newFilePath = runOptions.getFilePath().resolveSibling(newFileName);
                 fileManager.write(newFilePath, encryptedContent);
+            } else if (runOptions.getCommand() == Command.DECRYPT) {
+                String content = fileManager.read(runOptions.getFilePath());
+                String decryptedContent = cypher.decrypt(content, runOptions.getKey());
+                String fileName = runOptions.getFilePath().getFileName().toString();
+                String newFileName = fileName.substring(0, fileName.length() - 4) + " [DECRYPTED].txt";
+
+                Path newFilePath = runOptions.getFilePath().resolveSibling(newFileName);
+                fileManager.write(newFilePath, decryptedContent);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
