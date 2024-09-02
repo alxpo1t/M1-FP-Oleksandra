@@ -5,8 +5,9 @@ import java.util.Arrays;
 import java.util.Collections;
 
 public class Cypher {
-    private final ArrayList<Character> originalAlphabet = new ArrayList<>(Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'));
+    private final ArrayList<Character> originalAlphabet = new ArrayList<>(Arrays.asList('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'));
     public static final ArrayList<String> ENG_WORDS = new ArrayList<>(Arrays.asList("to", "this", "This", "those", "at", "the", "The", "are", "was", "and", "you", "for"));
+
 
     public String encrypt(String input, int key) {
         key = Math.negateExact(key);
@@ -56,11 +57,16 @@ public class Cypher {
     }
 
     private Character processSymbol(char symbol, ArrayList<Character> rotatedAlphabet) {
-        if (!originalAlphabet.contains(symbol)) {
+        boolean isUpperCase = Character.isUpperCase(symbol);
+        char symbolLowerCase = Character.toLowerCase(symbol);
+
+        if (!originalAlphabet.contains(symbolLowerCase)) {
             return symbol;
         }
-        int index = originalAlphabet.indexOf(symbol);
 
-        return rotatedAlphabet.get(index);
+        int index = originalAlphabet.indexOf(symbolLowerCase);
+        char rotatedChar = rotatedAlphabet.get(index);
+
+        return isUpperCase ? Character.toUpperCase(rotatedChar) : rotatedChar;
     }
 }
