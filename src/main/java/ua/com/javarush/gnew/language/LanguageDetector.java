@@ -21,6 +21,6 @@ public class LanguageDetector {
     }
 
     private static boolean isUkrainianCharacter(char ch) {
-        return (ch >= '\u0400' && ch <= '\u04FF');
+        return (ch >= 'Ѓ' && ch <= 'ї');
     }
 }
