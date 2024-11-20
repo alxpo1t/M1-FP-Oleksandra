@@ -13,6 +13,7 @@ import java.nio.file.Path;
 
 public class Main {
     public static void main(String[] args) {
+        System.out.println("_________________");
         LanguageDetector languageDetector = new LanguageDetector();
         FileManager fileManager = new FileManager();
         ArgumentsParser argumentsParser = new ArgumentsParser();
